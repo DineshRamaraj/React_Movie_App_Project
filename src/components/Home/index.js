@@ -68,7 +68,35 @@ class Home extends Component {
 
   renderSuccessView = () => {
     const {moviesList} = this.state
-    return <AllMoviesItem moviesList={moviesList} />
+    const clickDecreasePage = () => {
+      const {currentPageNo} = this.state
+      if (currentPageNo > 1) {
+        this.setState(
+          prevState => ({
+            currentPageNo: prevState.currentPageNo - 1,
+          }),
+          this.getMoviesList,
+        )
+      }
+    }
+
+    const clickIncreasePage = () => {
+      const {currentPageNo} = this.state
+      if (currentPageNo <= 500) {
+        this.setState(
+          prevState => ({
+            currentPageNo: prevState.currentPageNo + 1,
+          }),
+          this.getMoviesList,
+        )
+      }
+    }
+    return 
+      <AllMoviesItem
+        moviesList={moviesList}
+        clickDecreasePage={clickDecreasePage}
+        clickIncreasePage={clickIncreasePage}
+      />
   }
 
   renderLoadingView = () => <Loading />
