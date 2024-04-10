@@ -27,7 +27,28 @@ const AllMoviesItem = props => {
           </li>
         </Link>
       ))}
-    </ul>
+    </ul> 
+        <ul className="create-pagination">
+        {/* This Time I use simple Pagination */}
+        <li className="create-item-pagination">
+          <button
+            type="button"
+            className="pagination-button"
+            onClick={decreasePagination}
+          >
+            1
+          </button>
+        </li>
+        <li className="create-item-pagination">
+          <button
+            type="button"
+            className="pagination-button"
+            onClick={increasePagination}
+          >
+            Next
+          </button>
+        </li>
+      </ul>
   )
 }
 
