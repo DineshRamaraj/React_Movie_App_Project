@@ -4,7 +4,9 @@ import {Component} from 'react'
 import Failure from '../Failure'
 import Loading from '../Loading'
 import AllMoviesItem from '../AllMoviesItem'
+import NoSearch from '../NoSearch'
 import './index.css'
+import ContextContainer from '../../Context/contextContainer'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -13,10 +15,10 @@ const apiStatusConstants = {
   failure: 'FAILURE',
 }
 
-class Home extends Component {
+class SearchContainer extends Component {
   state = {
     moviesList: [],
-    currentPageNo: 500,
+    currentPageNo: 1,
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -46,7 +48,8 @@ class Home extends Component {
     this.setState({apiStatus: apiStatusConstants.in_Progress})
     const apiKey = Cookies.get('api_key')
     const {currentPageNo} = this.state
-    const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=${currentPageNo}`
+    const {searchInput} = this.props
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${searchInput}&page=${currentPageNo}`
 
     const options = {
       method: 'GET',
@@ -59,10 +62,10 @@ class Home extends Component {
         apiStatus: apiStatusConstants.success,
         moviesList: updatedData,
       })
-      console.log(data)
+      //   console.log(data)
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
-      console.log('Error ', data)
+      //   console.log('Error ', data)
     }
   }
 
@@ -75,12 +78,24 @@ class Home extends Component {
 
   renderFailureView = () => <Failure />
 
+  renderNoSearchView = () => (
+    <ContextContainer.Consumer>
+      {value => {
+        const {onRetry} = value
+        return <NoSearch onRetry={onRetry} />
+      }}
+    </ContextContainer.Consumer>
+  )
+
   renderMainView = () => {
-    const {apiStatus} = this.state
+    const {apiStatus, moviesList} = this.state
 
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.renderSuccessView()
+        if (moviesList.length > 0) {
+          return this.renderSuccessView()
+        }
+        return this.renderNoSearchView()
       case apiStatusConstants.in_Progress:
         return this.renderLoadingView()
       case apiStatusConstants.failure:
@@ -91,8 +106,12 @@ class Home extends Component {
   }
 
   render() {
-    return <div className="home-container">{this.renderMainView()}</div>
+    const {moviesList} = this.state
+    const {searchInput} = this.props
+    console.log(searchInput)
+    console.log(moviesList)
+    return <div className="search-component">{this.renderMainView()}</div>
   }
 }
 
-export default Home
+export default SearchContainer

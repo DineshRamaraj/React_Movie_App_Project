@@ -13,10 +13,10 @@ const apiStatusConstants = {
   failure: 'FAILURE',
 }
 
-class Home extends Component {
+class TopRated extends Component {
   state = {
     moviesList: [],
-    currentPageNo: 500,
+    currentPageNo: 1,
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -46,7 +46,7 @@ class Home extends Component {
     this.setState({apiStatus: apiStatusConstants.in_Progress})
     const apiKey = Cookies.get('api_key')
     const {currentPageNo} = this.state
-    const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=${currentPageNo}`
+    const apiUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=${currentPageNo}`
 
     const options = {
       method: 'GET',
@@ -91,8 +91,8 @@ class Home extends Component {
   }
 
   render() {
-    return <div className="home-container">{this.renderMainView()}</div>
+    return <div className="top-rated-container">{this.renderMainView()}</div>
   }
 }
 
-export default Home
+export default TopRated
