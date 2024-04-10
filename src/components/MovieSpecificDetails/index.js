@@ -15,7 +15,6 @@ const apiStatusConstants = {
 class MovieSpecificDetails extends Component {
   state = {
     movieDetails: {},
-    movieCase: [],
     apiStatus: apiStatusConstants.initial,
   }
 

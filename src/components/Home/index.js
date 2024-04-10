@@ -91,12 +91,13 @@ class Home extends Component {
         )
       }
     }
-    return 
+    return (
       <AllMoviesItem
         moviesList={moviesList}
         clickDecreasePage={clickDecreasePage}
         clickIncreasePage={clickIncreasePage}
       />
+    )
   }
 
   renderLoadingView = () => <Loading />
